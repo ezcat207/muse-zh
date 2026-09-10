@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Muse Spark API 教程：开发者入门 | Muse 中文资讯站</title>
+<meta name="description" content="Meta Model API 开发者入门：免费额度、价格、OpenAI 兼容调用方式，带你用 Muse Spark 模型构建应用。">
+<link rel="canonical" href="https://muse-zh.vercel.app/articles/muse-spark-api.html">
+<meta property="og:title" content="Muse Spark API 教程：开发者入门">
+<meta property="og:description" content="Meta Model API 开发者入门：免费额度、价格、OpenAI 兼容调用方式，带你用 Muse Spark 模型构建应用。">
+<meta property="og:type" content="article">
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.8;color:#1f2937;background:#f8fafc}
+a{color:#0064e0;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+header.site{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:10}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-weight:800;font-size:18px;color:#111}.logo span{color:#0064e0}
+nav.cat{display:flex;gap:4px;overflow-x:auto}
+nav.cat a{font-size:13px;color:#4b5563;padding:6px 10px;white-space:nowrap;border-radius:6px}
+nav.cat a:hover{background:#eff6ff;color:#0064e0;text-decoration:none}
+.hero{background:linear-gradient(135deg,#0064e0,#7c3aed);color:#fff;padding:56px 0 48px;text-align:center}
+.hero h1{font-size:30px;margin-bottom:12px}
+.hero p{opacity:.92;font-size:15px;max-width:640px;margin:0 auto}
+.hero .kw{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.hero .kw span{background:rgba(255,255,255,.18);font-size:12px;padding:4px 12px;border-radius:20px}
+section.block{padding:36px 0}
+h2.sec{font-size:20px;margin-bottom:18px;padding-left:10px;border-left:4px solid #0064e0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;transition:box-shadow .2s}
+.card:hover{box-shadow:0 6px 20px rgba(0,100,224,.12)}
+.card .tag{font-size:11px;color:#0064e0;background:#eff6ff;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:8px}
+.card h3{font-size:16px;margin-bottom:6px}.card h3 a{color:#111}
+.card p{font-size:13px;color:#6b7280;line-height:1.6}
+article.post{background:#fff;border-radius:12px;padding:32px 28px;margin:28px 0;border:1px solid #e5e7eb}
+.crumb{font-size:13px;color:#9ca3af;margin-bottom:14px}
+article.post h1{font-size:26px;line-height:1.4;margin-bottom:10px}
+.meta{font-size:13px;color:#9ca3af;margin-bottom:24px}
+article.post h2{font-size:19px;margin:30px 0 12px;padding-top:8px}
+article.post p{margin:12px 0}
+article.post ul,article.post ol{margin:12px 0 12px 22px}
+article.post li{margin:6px 0}
+details.faq{background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;margin:10px 0;padding:12px 16px}
+details.faq summary{font-weight:700;cursor:pointer}
+.refs{background:#f8fafc;border-radius:8px;padding:16px 18px;margin-top:28px;font-size:13px}
+.refs h2{font-size:15px!important;margin:0 0 8px!important}
+.refs li{margin:4px 0}
+.note{font-size:12px;color:#9ca3af;border-top:1px solid #e5e7eb;margin-top:24px;padding-top:14px}
+.related{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:14px}
+.related a{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;font-size:14px;color:#111}
+.related a:hover{border-color:#0064e0;text-decoration:none}
+footer.site{background:#111827;color:#9ca3af;font-size:13px;padding:32px 0;margin-top:40px;text-align:center}
+footer.site p{margin:6px 0}
+@media(max-width:640px){.hero h1{font-size:24px}article.post{padding:22px 18px}article.post h1{font-size:22px}}
+</style></head><body>
+<header class="site"><div class="wrap">
+<div class="logo"><a href="/" style="color:#111;text-decoration:none">Muse<span>中文资讯站</span></a></div>
+<nav class="cat"><a href="/#cat-新手入门">新手入门</a><a href="/#cat-费用订阅">费用订阅</a><a href="/#cat-对比评测">对比评测</a><a href="/#cat-安全隐私">安全隐私</a><a href="/#cat-场景实战">场景实战</a><a href="/#cat-API 开发">API 开发</a></nav></div></header>
+<div class="wrap"><article class="post">
+<div class="crumb"><a href="/">首页</a> / API 开发 / Muse Spark API 教程：开发者入门</div>
+<h1>Muse Spark API 教程：开发者入门</h1>
+<div class="meta">更新于 2026-09-10 · API 开发 · 阅读约 4 分钟</div>
+<p>Muse 背后的 Muse Spark 模型，开发者可以通过 Meta Model API 直接调用：OpenAI 兼容接口、每百万 token 输入 1.25 美元 / 输出 4.25 美元，还有 20 美元免费额度。这篇是开发者上手的最短路径。</p>
+<h2>先搞清三个名字</h2>
+<ul><li><strong>Muse</strong>：给普通人用的个人 Agent 产品（App / 网页 / WhatsApp）。</li><li><strong>Muse Spark</strong>：底层的模型系列，Agent 任务专用，有 1M token 超长上下文。</li><li><strong>Meta Model API</strong>：在 dev.meta.ai 上开放的开发者 API，按量付费，OpenAI 接口兼容。</li></ul>
+<h2>上手四步</h2>
+<ol><li><strong>注册</strong>：打开 dev.meta.ai，用 Meta 账号注册开发者账号。</li><li><strong>领免费额度</strong>：公开预览期提供 20 美元免费额度，够跑不少实验。额度直接打到你的开发者账户，可在控制台查看余额。</li><li><strong>创建 API Key</strong>：在控制台生成 Key，妥善保管，别进代码仓库。</li><li><strong>发起第一次调用</strong>：接口兼容 OpenAI 格式，用你熟悉的 OpenAI SDK 就能调，把 base_url 换成官方文档中的地址即可：</li></ol>
+<p>```python from openai import OpenAI client = OpenAI( api_key=&quot;你的 Meta Model API Key&quot;, base_url=&quot;〈见 dev.meta.ai 官方文档中的 API 地址〉&quot;, ) resp = client.chat.completions.create( model=&quot;muse-spark&quot;, messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;用一句话介绍你自己&quot;}], ) print(resp.choices[0].message.content) ```</p>
+<h2>价格与规格速览</h2>
+<ul><li>输入 $1.25 / 百万 token，输出 $4.25 / 百万 token，免费额度 $20。</li><li>上下文窗口 100 万 token，适合整仓库代码分析、长文档处理。</li><li>原生支持并行 subagent 与 computer use，Agent 类应用不用自己造轮子。</li><li>据第三方实测介绍，早期合作方包括 Replit、Cline、Box 等（报道口径）。</li><li>公开预览期政策可能调整，动手前以 dev.meta.ai 控制台的最新说明为准。</li></ul>
+<h2>Muse Spark 1.1 的关键能力</h2>
+<ul><li><strong>100 万 token 上下文</strong>：整仓库代码、几百页文档一次读完。</li><li><strong>多模态输入</strong>：文本、图像、音频都能吃，输出为文本。</li><li><strong>并行 subagent</strong>：长任务自动拆分子任务并行跑，上下文跨会话保持。</li><li><strong>Computer use</strong>：内置的计算机操作能力，Agent 场景不用自己造轮子。</li><li><strong>Thinking 模式</strong>：在 Meta AI App / meta.ai 里切到 Thinking 模式就能免费体验，不花钱先验货。</li></ul>
+<h2>进阶：从调用到 Agent</h2>
+<p>调通第一次调用后，下一步建议：</p>
+<ol><li><strong>试长上下文</strong>：扔一份几十页的 PDF 进去做问答，感受 1M 窗口的差异。</li><li><strong>试 subagent</strong>：给它一个多步骤任务（如&quot;分析这个仓库并输出重构建议&quot;），观察它如何拆解和并行。</li><li><strong>看 cookbook</strong>：Meta 官方的 meta-model-cookbook 里有各模型的实战 recipe，是很好的起手模板。</li><li><strong>算成本</strong>：按你的输入输出比例，用 $1.25 / $4.25 的单价估算月成本，再决定生产环境怎么配。</li></ol>
+<h2>适合做什么</h2>
+<p>长文档问答、代码库级分析、多步骤 Agent 任务是对口场景。图像理解、语音转写也有专门的模型与文档（如 Muse Image、Voice Transcribe）。刚起步的话，先从 cookbook 里的 recipe 改起，比从零写快得多。纯聊天的轻量需求，用 Meta AI App 里免费的 Thinking 模式就行，不必走 API。</p>
+<h2>常见问题</h2>
+<details class="faq"><summary>免费额度怎么领？</summary><p>注册 dev.meta.ai 后按控制台指引领取，公开预览期的政策以官网为准。</p></details>
+<details class="faq"><summary>和直接用 Muse App 有什么区别？</summary><p>App 是开箱即用的产品；API 是给你自己做产品的原材料，按调用量计费。</p></details>
+<details class="faq"><summary>支持中文吗？</summary><p>模型本身多语言，中文任务可用；复杂 Agent 流程建议自己实测验证。</p></details>
+<details class="faq"><summary>100 万上下文有什么用？</summary><p>一次塞进整个代码仓库或几百页文档做问答，这是短上下文模型做不到的。</p></details>
+<details class="faq"><summary>价格和 GPT 系列比怎么样？</summary><p>$1.25 / $4.25 的定价主打&quot;够强且便宜&quot;，具体划算与否看你的输入输出配比，跑个基准测试最实在。</p></details>
+<div class="refs"><h2>参考文献</h2><ul>
+</ul></div>
+<ul><li><a href="https://www.motionlabs.agency/blog/how-to-use-muse-spark-1-1-model" target="_blank" rel="noopener">How to Use Muse Spark 1.1: Meta&#x27;s New Agentic AI Model（Motion Labs）</a></li><li><a href="https://www.youtube.com/watch?v=tpo5NPShtjs" target="_blank" rel="noopener">Muse Spark 1.1 Overview &amp; How to Use（YouTube）</a></li><li><a href="https://www.youtube.com/watch?v=AuLSVG4WTsE" target="_blank" rel="noopener">Meta Muse Spark 1.1 Explained: Agentic AI Models（YouTube）</a></li><li><a href="https://github.com/meta-models/meta-model-cookbook/blob/main/05_muse_image/README.md" target="_blank" rel="noopener">meta-model-cookbook（Meta 官方 GitHub）</a></li><li><a href="https://dev.meta.ai/docs/speech-to-text/" target="_blank" rel="noopener">Meta Model API 语音转写文档（dev.meta.ai）</a></li></ul>
+<p>本文更新于 2026 年 9 月；Muse 仍在快速迭代，功能与价格以 Meta 官方最新说明为准。</p>
+<p class="note">本文更新于 2026 年 9 月；Muse 仍在快速迭代，功能与价格以 Meta 官方最新说明为准。</p>
+</article>
+<h2 class="sec">相关阅读</h2>
+<div class="related"><a href="/articles/muse-shi-shen-me.html">Muse 是什么？一文读懂 Meta 的个人 AI 助手</a><a href="/articles/muse-zen-me-yong.html">Meta Muse 怎么用：新手使用教程</a><a href="/articles/muse-zhu-ce.html">Muse 怎么注册？完整注册教程</a></div>
+</div>
+<footer class="site"><div class="wrap">
+<p><strong style="color:#e5e7eb">Muse 中文资讯站</strong> · Meta 个人 AI 助手的第一手中文资讯与教程</p>
+<p>本站为独立非官方站点，与 Meta 公司无关。教程内容仅供参考，功能与价格以 Meta 官方最新说明为准。</p>
+<p>© 2026 Muse 中文资讯站</p></div></footer>
+</body></html>
