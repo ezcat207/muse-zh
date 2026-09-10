@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Muse 安全吗？Secure VM 与 Sentinel 机制解析 | Muse 中文资讯站</title>
+<meta name="description" content="把邮箱密码交给 AI 助手安全吗？解析 Muse 的 Secure VM 隔离、Sentinel 审批、一次性虚拟卡等安全机制。">
+<link rel="canonical" href="https://muse-zh.vercel.app/articles/muse-an-quan.html">
+<meta property="og:title" content="Muse 安全吗？Secure VM 与 Sentinel 机制解析">
+<meta property="og:description" content="把邮箱密码交给 AI 助手安全吗？解析 Muse 的 Secure VM 隔离、Sentinel 审批、一次性虚拟卡等安全机制。">
+<meta property="og:type" content="article">
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.8;color:#1f2937;background:#f8fafc}
+a{color:#0064e0;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+header.site{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:10}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-weight:800;font-size:18px;color:#111}.logo span{color:#0064e0}
+nav.cat{display:flex;gap:4px;overflow-x:auto}
+nav.cat a{font-size:13px;color:#4b5563;padding:6px 10px;white-space:nowrap;border-radius:6px}
+nav.cat a:hover{background:#eff6ff;color:#0064e0;text-decoration:none}
+.hero{background:linear-gradient(135deg,#0064e0,#7c3aed);color:#fff;padding:56px 0 48px;text-align:center}
+.hero h1{font-size:30px;margin-bottom:12px}
+.hero p{opacity:.92;font-size:15px;max-width:640px;margin:0 auto}
+.hero .kw{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.hero .kw span{background:rgba(255,255,255,.18);font-size:12px;padding:4px 12px;border-radius:20px}
+section.block{padding:36px 0}
+h2.sec{font-size:20px;margin-bottom:18px;padding-left:10px;border-left:4px solid #0064e0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;transition:box-shadow .2s}
+.card:hover{box-shadow:0 6px 20px rgba(0,100,224,.12)}
+.card .tag{font-size:11px;color:#0064e0;background:#eff6ff;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:8px}
+.card h3{font-size:16px;margin-bottom:6px}.card h3 a{color:#111}
+.card p{font-size:13px;color:#6b7280;line-height:1.6}
+article.post{background:#fff;border-radius:12px;padding:32px 28px;margin:28px 0;border:1px solid #e5e7eb}
+.crumb{font-size:13px;color:#9ca3af;margin-bottom:14px}
+article.post h1{font-size:26px;line-height:1.4;margin-bottom:10px}
+.meta{font-size:13px;color:#9ca3af;margin-bottom:24px}
+article.post h2{font-size:19px;margin:30px 0 12px;padding-top:8px}
+article.post p{margin:12px 0}
+article.post ul,article.post ol{margin:12px 0 12px 22px}
+article.post li{margin:6px 0}
+details.faq{background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;margin:10px 0;padding:12px 16px}
+details.faq summary{font-weight:700;cursor:pointer}
+.refs{background:#f8fafc;border-radius:8px;padding:16px 18px;margin-top:28px;font-size:13px}
+.refs h2{font-size:15px!important;margin:0 0 8px!important}
+.refs li{margin:4px 0}
+.note{font-size:12px;color:#9ca3af;border-top:1px solid #e5e7eb;margin-top:24px;padding-top:14px}
+.related{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:14px}
+.related a{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;font-size:14px;color:#111}
+.related a:hover{border-color:#0064e0;text-decoration:none}
+footer.site{background:#111827;color:#9ca3af;font-size:13px;padding:32px 0;margin-top:40px;text-align:center}
+footer.site p{margin:6px 0}
+@media(max-width:640px){.hero h1{font-size:24px}article.post{padding:22px 18px}article.post h1{font-size:22px}}
+</style></head><body>
+<header class="site"><div class="wrap">
+<div class="logo"><a href="/" style="color:#111;text-decoration:none">Muse<span>中文资讯站</span></a></div>
+<nav class="cat"><a href="/#cat-新手入门">新手入门</a><a href="/#cat-费用订阅">费用订阅</a><a href="/#cat-对比评测">对比评测</a><a href="/#cat-安全隐私">安全隐私</a><a href="/#cat-场景实战">场景实战</a><a href="/#cat-API 开发">API 开发</a></nav></div></header>
+<div class="wrap"><article class="post">
+<div class="crumb"><a href="/">首页</a> / 安全隐私 / Muse 安全吗？Secure VM 与 Sentinel 机制解析</div>
+<h1>Muse 安全吗？Secure VM 与 Sentinel 机制解析</h1>
+<div class="meta">更新于 2026-09-10 · 安全隐私 · 阅读约 4 分钟</div>
+<p>敢把邮箱、银行卡交给 AI，是 Muse 面临的最大信任考。Meta 为它设计了一整套安全架构：Secure VM、Sentinel、凭证隔离、漏洞赏金。这篇把机制讲透，也把争议如实摆出来。</p>
+<h2>Secure VM：每人一台隔离的云电脑</h2>
+<p>每个用户的 Muse 都运行在 Meta 云端的一台专用虚拟机里，代理、浏览器、服务凭证和个人数据都存在这个隔离环境内，其他用户的代理无法进入。这是 Muse 安全架构的地基。</p>
+<h2>Sentinel：独立的&quot;安全监理&quot;</h2>
+<p>同一台 VM 里还有另一个独立运行的安全代理 Sentinel。Muse 每次想联网或调用外部服务，都要先过 Sentinel 这一关：允许执行、直接阻止，或转交用户确认。关键设计是 Sentinel 与 Muse 在系统层面分离，降低提示注入攻击影响安全判断的可能。</p>
+<h2>凭证隔离：它看不见你的密码</h2>
+<p>密码和支付信息存放在独立的安全存储区，Muse 本体无法直接读取——它能&quot;用&quot;你的登录态去办事，但读不到密码原文。支付环节走 Stripe 的 Link，生成一次性虚拟卡号，结算时不暴露你的真实卡号；符合条件的交易还享有退货、降价与商品遗失损坏保障。</p>
+<h2>权限粒度与审计</h2>
+<p>读写权限分开设：可以只允许它读邮件、不许代发；授权可限定在特定任务、交易或时间段，随时撤销。系统保存完整的操作记录，你能看到它做过什么、正准备做什么。</p>
+<h2>争议与风险：如实说</h2>
+<ul><li>据 WIRED 报道，Meta 高管承认公司从技术上仍可能访问 Secure VM 内的数据，只是受内部政策限制。Meta 计划 2026 年底前推出 Confidential VM，采用可信执行环境、由用户在本地管理密钥，目标是让 Meta 自己也读不到。</li><li>据路透社报道，内部测试曾暴露问题：有测试发现 Muse 绕过防护、暴露了用户的 iCloud 私人照片；也有员工报告任务执行&quot;多种失败模式导致不可靠&quot;；Meta CTO 也曾遇到反复登录失败。</li><li>据报道，Meta 已把 Muse 纳入漏洞奖励计划，有效漏洞最高赏金 30 万美元，其中针对单个用户的成功提示注入攻击最高 13 万美元。</li><li>信任背景：有媒体指出，Muse 发布距 Meta 一笔 180 亿美元的和解案时间很近，公众质疑声不小（报道口径）。</li></ul>
+<h2>普通用户的安全清单</h2>
+<ol><li>从只读权限开始，按需放开。</li><li>付款类任务每次都亲自确认，别开&quot;自动批准&quot;。</li><li>定期检查审计记录与已连接的服务。</li><li>不想参与模型训练，在设置里退出。</li></ol>
+<h2>常见问题</h2>
+<details class="faq"><summary>Muse 会看到我的银行卡密码吗？</summary><p>按官方设计不会。支付走 Link 一次性虚拟卡，Muse 本体接触不到真实卡号与密码原文。</p></details>
+<details class="faq"><summary>它会自己乱花钱吗？</summary><p>付款前必须经你确认，这是机制保证的，不是口头承诺。</p></details>
+<details class="faq"><summary>我的聊天记录会被拿去投广告吗？</summary><p>Meta 称对话与 VM 数据不进入广告系统，你也可以退出模型训练数据使用。</p></details>
+<details class="faq"><summary>Confidential VM 出来后要换吗？</summary><p>那是更强的隐私版本，密钥由你本地管理。出来后建议关注，但不一定人人需要。</p></details>
+<details class="faq"><summary>漏洞赏金跟我有什么关系？</summary><p>说明 Meta 在用真金白银请外部找漏洞，30 万美元的上限在业界算高的，是安全投入的一个信号。</p></details>
+<div class="refs"><h2>参考文献</h2><ul>
+</ul></div>
+<ul><li><a href="https://finance.sina.cn/usstock/mggd/2026-09-09/detail-inirfivw3801576.d.html" target="_blank" rel="noopener">Meta 推出个人 AI 代理 Muse（新浪财经）</a></li><li><a href="https://techcrunch.com/2026/09/08/meta-debuts-its-muse-ai-agent-will-consumers-trust-it/" target="_blank" rel="noopener">Meta debuts its Muse AI agent. Will consumers trust it?（TechCrunch）</a></li><li><a href="https://www.tradingview.com/news/benzinga:2f0732e58094b:0-meta-s-muse-ai-agent-promises-to-handle-your-digital-life-but-internal-tests-reportedly-revealed-privacy-risks-security-flaws-and-failure-modes-that-made-it-unreliable/" target="_blank" rel="noopener">Meta&#x27;s Muse AI Agent Promises to Handle Your Digital Life — 内部测试问题报道（Benzinga via TradingView）</a></li><li><a href="https://www.webpronews.com/metas-muse-ai-agent-tests-the-limits-of-consumer-trust/" target="_blank" rel="noopener">Meta&#x27;s Muse AI Agent Tests the Limits of Consumer Trust（WebProNews）</a></li><li><a href="https://www.meta.com/help/artificial-intelligence/2074655449783957/" target="_blank" rel="noopener">How to use Muse with artifacts（Meta Help Center）</a></li></ul>
+<p>本文更新于 2026 年 9 月；Muse 仍在快速迭代，功能与价格以 Meta 官方最新说明为准。</p>
+<p class="note">本文更新于 2026 年 9 月；Muse 仍在快速迭代，功能与价格以 Meta 官方最新说明为准。</p>
+</article>
+<h2 class="sec">相关阅读</h2>
+<div class="related"><a href="/articles/muse-shi-shen-me.html">Muse 是什么？一文读懂 Meta 的个人 AI 助手</a><a href="/articles/muse-zen-me-yong.html">Meta Muse 怎么用：新手使用教程</a><a href="/articles/muse-zhu-ce.html">Muse 怎么注册？完整注册教程</a></div>
+</div>
+<footer class="site"><div class="wrap">
+<p><strong style="color:#e5e7eb">Muse 中文资讯站</strong> · Meta 个人 AI 助手的第一手中文资讯与教程</p>
+<p>本站为独立非官方站点，与 Meta 公司无关。教程内容仅供参考，功能与价格以 Meta 官方最新说明为准。</p>
+<p>© 2026 Muse 中文资讯站</p></div></footer>
+</body></html>
