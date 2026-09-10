@@ -1,579 +1,67 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light" />
-  <meta name="description" content="Muse 中文资讯与开发教程：新闻、上手指南、模型对比、API 开发与玩法案例。" />
-  <meta name="theme-color" content="#f4f1e8" />
-  <link rel="icon" href="data:," />
-  <title>Muse 中文资讯站</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@600;700;900&display=swap');
-
-    :root{
-      --paper:#f4f1e8;
-      --ink:#151713;
-      --muted:#5d6159;
-      --line:#c9c6ba;
-      --soft:#e8e4d8;
-      --accent:#e2542f;
-      --accent-dark:#9f2e13;
-      --green:#1e5f4b;
-      --white:#fffdf8;
-      --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
-      --serif:"Noto Serif SC","Songti SC",serif;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.7}
-    button,a{font:inherit}
-    button{color:inherit}
-    a{color:inherit}
-    :focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-    .shell{width:min(1180px,calc(100% - 36px));margin:auto}
-    .topline{height:6px;background:var(--accent)}
-    .site-nav{position:sticky;top:0;z-index:20;background:rgba(244,241,232,.96);border-bottom:1px solid var(--line)}
-    .site-nav-inner{min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:22px}
-    .edition{font:700 13px/1 var(--sans);letter-spacing:.08em;color:var(--accent-dark);white-space:nowrap}
-    .nav-links{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none}
-    .nav-links::-webkit-scrollbar{display:none}
-    .nav-link{border:0;background:transparent;padding:9px 11px;cursor:pointer;font-size:14px;white-space:nowrap;border-bottom:2px solid transparent}
-    .nav-link:hover,.nav-link.active{color:var(--accent-dark);border-bottom-color:var(--accent)}
-
-    .home{display:block}
-    .home[hidden],.article-view[hidden]{display:none}
-    .hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr);gap:42px;padding:68px 0 58px;border-bottom:2px solid var(--ink)}
-    .hero-copy{align-self:center}
-    .dateline{display:flex;align-items:center;gap:10px;color:var(--accent-dark);font-weight:700;font-size:13px;letter-spacing:.06em}
-    .dateline::before{content:"";width:26px;height:3px;background:var(--accent)}
-    h1{font-family:var(--serif);font-size:clamp(40px,6vw,76px);line-height:1.12;letter-spacing:-.045em;margin:20px 0 22px;max-width:900px}
-    .hero-dek{max-width:720px;color:#343832;font-size:clamp(17px,2vw,21px);line-height:1.85;margin:0}
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
-    .primary,.secondary{border:1px solid var(--ink);padding:11px 17px;cursor:pointer;text-decoration:none;font-weight:700}
-    .primary{background:var(--ink);color:var(--white)}
-    .primary:hover{background:var(--accent);border-color:var(--accent)}
-    .secondary{background:transparent}
-    .secondary:hover{background:var(--white)}
-    .hero-graphic{background:var(--green);min-height:350px;position:relative;overflow:hidden;display:grid;place-items:center;padding:28px}
-    .hero-graphic::after{content:"";position:absolute;inset:13px;border:1px solid rgba(255,255,255,.45)}
-    .hero-graphic svg{width:100%;height:auto;position:relative;z-index:1}
-    .hero-caption{position:absolute;left:28px;bottom:24px;z-index:2;color:white;font-size:12px;letter-spacing:.08em}
-
-    .section{padding:54px 0;border-bottom:1px solid var(--line)}
-    .section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px}
-    .section-head h2{font:900 clamp(28px,3vw,42px)/1.2 var(--serif);margin:0}
-    .section-head p{color:var(--muted);margin:0;max-width:560px}
-    .briefs{display:grid;grid-template-columns:1.2fr .8fr .8fr;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
-    .brief{padding:26px 24px 26px 0;min-height:205px}
-    .brief+.brief{border-left:1px solid var(--line);padding-left:24px}
-    .brief time{font-size:12px;color:var(--accent-dark);font-weight:700}
-    .brief h3{font:800 22px/1.45 var(--serif);margin:12px 0 10px}
-    .brief:first-child h3{font-size:30px}
-    .brief p{color:var(--muted);margin:0}
-
-    .channel-grid{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
-    .channel{border:0;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);background:transparent;text-align:left;padding:22px 18px;min-height:160px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between}
-    .channel:hover{background:var(--white)}
-    .channel-no{font:700 12px/1 var(--sans);color:var(--accent-dark)}
-    .channel-name{font:800 23px/1.3 var(--serif)}
-    .channel-desc{font-size:13px;color:var(--muted)}
-
-    .article-toolbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px;flex-wrap:wrap}
-    .filters{display:flex;gap:8px;flex-wrap:wrap}
-    .filter{border:1px solid var(--line);background:transparent;padding:7px 12px;cursor:pointer;font-size:13px}
-    .filter:hover,.filter.active{background:var(--ink);color:var(--white);border-color:var(--ink)}
-    .count{font-size:13px;color:var(--muted)}
-    .article-list{border-top:2px solid var(--ink)}
-    .article-card{display:grid;grid-template-columns:80px 170px minmax(0,1fr) 210px;gap:24px;padding:26px 0;border-bottom:1px solid var(--line);align-items:start}
-    .article-index{font:900 34px/1 var(--serif);color:var(--line)}
-    .card-meta{font-size:12px;color:var(--muted)}
-    .category{display:inline-block;color:var(--accent-dark);font-weight:800;margin-bottom:8px}
-    .article-main h3{font:800 clamp(21px,2.2vw,28px)/1.45 var(--serif);margin:0 0 8px}
-    .article-main h3 button{border:0;background:transparent;padding:0;text-align:left;cursor:pointer;color:inherit}
-    .article-main h3 button:hover{color:var(--accent-dark);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
-    .article-main p{margin:0;color:var(--muted)}
-    .keywords{display:flex;gap:7px;flex-wrap:wrap;align-content:start}
-    .keyword{font-size:11px;border:1px solid var(--line);padding:4px 7px;color:#55594f;background:rgba(255,255,255,.28)}
-    .sample{font-size:11px;background:var(--green);color:white;padding:4px 7px;margin-left:6px;vertical-align:middle;font-family:var(--sans)}
-    .empty{padding:48px 0;color:var(--muted);text-align:center;border-bottom:1px solid var(--line)}
-
-    .article-view{min-height:70vh}
-    .article-back{border:0;background:transparent;padding:24px 0 10px;cursor:pointer;color:var(--accent-dark);font-weight:700}
-    .article-back:hover{text-decoration:underline}
-    .article-layout{display:grid;grid-template-columns:minmax(0,760px) minmax(220px,1fr);gap:72px;padding:28px 0 70px}
-    .article-header{border-top:5px solid var(--accent);padding-top:24px}
-    .article-kicker{color:var(--accent-dark);font-weight:800;font-size:14px}
-    .article-title{font:900 clamp(36px,6vw,64px)/1.22 var(--serif);letter-spacing:-.035em;margin:14px 0 20px}
-    .article-summary{font-size:20px;line-height:1.8;color:#3e423b;border-bottom:1px solid var(--ink);padding-bottom:24px;margin-bottom:14px}
-    .article-byline{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);padding:8px 0 28px}
-    .article-body{font-size:17px;line-height:1.95}
-    .article-body h2{font:900 30px/1.45 var(--serif);margin:48px 0 14px}
-    .article-body h3{font:800 21px/1.5 var(--serif);margin:32px 0 8px}
-    .article-body p{margin:0 0 20px}
-    .article-body ul,.article-body ol{padding-left:1.35em;margin:0 0 22px}
-    .article-body li{margin:8px 0}
-    .article-body blockquote{margin:30px 0;padding:20px 22px;background:var(--soft);border-left:4px solid var(--accent);font-family:var(--serif);font-size:19px}
-    .article-body pre{background:#1c201b;color:#edf1e8;padding:20px;overflow:auto;border-radius:0;font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace}
-    .comparison{width:100%;border-collapse:collapse;margin:28px 0;font-size:15px}
-    .comparison th,.comparison td{text-align:left;vertical-align:top;padding:13px 11px;border:1px solid var(--line)}
-    .comparison th{background:var(--soft);font-weight:800}
-    .outline-box{background:var(--white);padding:24px;margin:30px 0}
-    .outline-box strong{display:block;margin-bottom:10px}
-    .article-aside{padding-top:112px}
-    .aside-block{border-top:2px solid var(--ink);padding-top:14px;margin-bottom:34px}
-    .aside-block h3{font:800 17px/1.4 var(--serif);margin:0 0 12px}
-    .aside-keywords{display:flex;gap:7px;flex-wrap:wrap}
-    .related button{display:block;width:100%;border:0;border-top:1px solid var(--line);background:transparent;padding:13px 0;text-align:left;cursor:pointer;font-size:14px;line-height:1.55}
-    .related button:hover{color:var(--accent-dark)}
-    .status-note{font-size:13px;color:var(--muted);background:var(--soft);padding:14px}
-
-    footer{background:var(--ink);color:#d8d9d1;padding:40px 0 max(40px,env(safe-area-inset-bottom))}
-    .footer-inner{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:start}
-    .footer-main{max-width:720px}
-    .footer-main strong{font-family:var(--serif);color:white;font-size:19px}
-    .footer-main p{font-size:13px;color:#adafa7;margin:10px 0 0}
-    .footer-nav{display:flex;gap:14px;flex-wrap:wrap}
-    .footer-nav button{border:0;background:transparent;color:#d8d9d1;padding:0;cursor:pointer;font-size:13px}
-    .footer-nav button:hover{color:white;text-decoration:underline}
-
-    @media(max-width:920px){
-      .hero{grid-template-columns:1fr;gap:28px;padding-top:48px}
-      .hero-graphic{min-height:290px}
-      .channel-grid{grid-template-columns:repeat(2,1fr)}
-      .article-card{grid-template-columns:52px minmax(0,1fr);gap:14px}
-      .card-meta{grid-column:2}
-      .article-main{grid-column:2}
-      .keywords{grid-column:2}
-      .article-layout{grid-template-columns:1fr;gap:10px}
-      .article-aside{padding-top:0;display:grid;grid-template-columns:1fr 1fr;gap:24px}
-    }
-    @media(max-width:680px){
-      .shell{width:min(100% - 24px,1180px)}
-      .site-nav-inner{min-height:55px;align-items:center}
-      .edition{display:none}
-      .site-nav-inner{padding:7px 0}
-      .nav-links{width:100%;overflow:visible;flex-wrap:wrap;justify-content:center;row-gap:0}
-      .nav-link{padding:7px 8px;font-size:12px}
-      .hero{padding:38px 0 40px}
-      h1{font-size:43px;line-height:1.17}
-      .hero-dek{font-size:17px}
-      .hero-graphic{min-height:230px;padding:20px}
-      .section{padding:42px 0}
-      .section-head{display:block}
-      .section-head p{margin-top:10px}
-      .briefs{grid-template-columns:1fr}
-      .brief,.brief+.brief{padding:22px 0;min-height:0;border-left:0;border-top:1px solid var(--line)}
-      .brief:first-child{border-top:0}
-      .brief:first-child h3{font-size:25px}
-      .channel-grid{grid-template-columns:1fr 1fr}
-      .channel{min-height:145px}
-      .channel:last-child{grid-column:1/-1;min-height:120px}
-      .article-card{grid-template-columns:38px minmax(0,1fr);padding:22px 0;gap:10px}
-      .article-index{font-size:24px}
-      .article-main h3{font-size:21px}
-      .article-title{font-size:38px}
-      .article-summary{font-size:17px}
-      .article-body{font-size:16px;line-height:1.9}
-      .article-body h2{font-size:25px}
-      .article-aside{grid-template-columns:1fr}
-      .comparison{display:block}
-      .comparison thead{display:none}
-      .comparison tbody,.comparison tr,.comparison td{display:block;width:100%}
-      .comparison tr{border:1px solid var(--line);margin:0 0 14px;background:var(--white)}
-      .comparison td{border:0;border-bottom:1px solid var(--line);padding:11px 12px}
-      .comparison td:last-child{border-bottom:0}
-      .comparison td::before{content:attr(data-label);display:block;font-size:11px;font-weight:800;color:var(--accent-dark);margin-bottom:3px}
-      .footer-inner{grid-template-columns:1fr}
-    }
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-  </style>
-</head>
-<body>
-  <div class="topline"></div>
-  <nav class="site-nav" aria-label="主导航">
-    <div class="shell site-nav-inner">
-      <div class="edition">2026 · 九月创刊</div>
-      <div class="nav-links">
-        <button class="nav-link active" data-home="top">首页</button>
-        <button class="nav-link" data-scroll="briefs">最新快讯</button>
-        <button class="nav-link" data-category="新闻资讯">新闻资讯</button>
-        <button class="nav-link" data-category="新手教程">新手教程</button>
-        <button class="nav-link" data-category="模型对比">模型对比</button>
-        <button class="nav-link" data-category="API 开发">API 开发</button>
-        <button class="nav-link" data-category="玩法案例">玩法案例</button>
-      </div>
-    </div>
-  </nav>
-
-  <main id="top">
-    <div class="home" id="homeView">
-      <div class="shell">
-        <section class="hero" aria-labelledby="heroTitle">
-          <div class="hero-copy">
-            <div class="dateline">Muse 上线第二天 · 独立开发者导读</div>
-            <h1 id="heroTitle">新助手来了，先看懂机会在哪里</h1>
-            <p class="hero-dek">从 Muse 产品本身，到 Muse Spark 与 Meta Model API：这里拆解真实入口、迁移路径与可落地的产品方向。少追热点，多做可复用的判断。</p>
-            <div class="hero-actions">
-              <button class="primary" data-open="muse-intro">先读 Muse 入门</button>
-              <button class="secondary" data-scroll="articles">浏览 10 篇选题</button>
-            </div>
-          </div>
-          <figure class="hero-graphic" aria-label="抽象的 AI 信息网络插画">
-            <svg viewBox="0 0 480 380" role="img" aria-label="由节点、对话框和代码块组成的抽象网络">
-              <g fill="none" stroke="#f4f1e8" stroke-width="2">
-                <path d="M74 78L210 130L372 65M210 130L162 268L361 298M210 130L361 298M162 268L53 314" opacity=".62"/>
-                <circle cx="74" cy="78" r="23" fill="#e2542f" stroke="none"/>
-                <circle cx="372" cy="65" r="17" fill="#f4f1e8" stroke="none"/>
-                <circle cx="53" cy="314" r="12" fill="#f4f1e8" stroke="none"/>
-                <rect x="152" y="82" width="118" height="95" fill="#173d32"/>
-                <path d="M174 111h63M174 129h44M174 147h72"/>
-                <rect x="304" y="248" width="118" height="100" fill="#e2542f" stroke="none"/>
-                <path d="M330 281l18 16-18 17M390 281l-18 16 18 17"/>
-                <path d="M151 235h23l17 15 16-15h24v-45h-80z" fill="#f4f1e8" stroke="none"/>
-                <circle cx="173" cy="213" r="4" fill="#1e5f4b" stroke="none"/>
-                <circle cx="192" cy="213" r="4" fill="#1e5f4b" stroke="none"/>
-                <circle cx="211" cy="213" r="4" fill="#1e5f4b" stroke="none"/>
-              </g>
-            </svg>
-            <figcaption class="hero-caption">PERSONAL AI / MODEL API / AGENT</figcaption>
-          </figure>
-        </section>
-
-        <section class="section" id="briefs">
-          <div class="section-head">
-            <h2>最新快讯</h2>
-            <p>用三分钟抓住发布初期最值得独立开发者关注的信号。</p>
-          </div>
-          <div class="briefs">
-            <article class="brief">
-              <time datetime="2026-09-09">2026.09.09</time>
-              <h3>Muse 美国上线，中文开发者最该关注的不是“套壳”</h3>
-              <p>产品入口之外，真正可开发的空间来自 Muse Spark 与 OpenAI 兼容的 Model API。</p>
-            </article>
-            <article class="brief">
-              <time datetime="2026-09-09">2026.09.09</time>
-              <h3>兼容接口降低迁移门槛</h3>
-              <p>现有调用层可以先隔离模型配置，再用小流量、可回滚方式做验证。</p>
-            </article>
-            <article class="brief">
-              <time datetime="2026-09-09">2026.09.09</time>
-              <h3>首批内容路线确定</h3>
-              <p>新闻、教程、对比、API、案例五个栏目，共 10 篇首发选题。</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="section" id="channels">
-          <div class="section-head">
-            <h2>五大栏目</h2>
-            <p>从“发生了什么”一路读到“今天能做什么”，每个栏目都对应一个明确问题。</p>
-          </div>
-          <div class="channel-grid" id="channelGrid"></div>
-        </section>
-
-        <section class="section" id="articles">
-          <div class="section-head">
-            <h2>首批 10 篇</h2>
-            <p>两篇完整样稿已上线，其余文章先公开编辑提纲与 SEO 关键词。</p>
-          </div>
-          <div class="article-toolbar">
-            <div class="filters" id="filters" aria-label="按栏目筛选"></div>
-            <div class="count" id="articleCount"></div>
-          </div>
-          <div class="article-list" id="articleList"></div>
-        </section>
-      </div>
-    </div>
-
-    <article class="article-view" id="articleView" hidden>
-      <div class="shell">
-        <button class="article-back" id="backButton">← 返回文章清单</button>
-        <div class="article-layout">
-          <div>
-            <header class="article-header" id="articleHeader"></header>
-            <div class="article-body" id="articleBody"></div>
-          </div>
-          <aside class="article-aside" id="articleAside" aria-label="文章补充信息"></aside>
-        </div>
-      </div>
-    </article>
-  </main>
-
-  <footer>
-    <div class="shell footer-inner">
-      <div class="footer-main">
-        <strong>写给中文读者的 Muse 观察与实践</strong>
-        <p>本站为独立非官方网站，与 Meta 无关。产品能力、接口与政策可能调整，请以官方最新信息为准。</p>
-      </div>
-      <div class="footer-nav">
-        <button data-home="top">首页</button>
-        <button data-scroll="articles">文章清单</button>
-        <button data-category="API 开发">API 开发</button>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    const channels = [
-      {name:'新闻资讯',desc:'发布动态与生态观察'},
-      {name:'新手教程',desc:'从注册到第一次使用'},
-      {name:'模型对比',desc:'按任务与成本做选择'},
-      {name:'API 开发',desc:'迁移、调用与工程实践'},
-      {name:'玩法案例',desc:'可复制的小产品思路'}
-    ];
-
-    const articles = [
-      {
-        slug:'muse-intro', category:'新闻资讯', date:'2026年9月9日', time:'21:30', sample:true,
-        title:'Muse 是什么？一文读懂 Meta 的个人 AI 助手',
-        summary:'从产品定位、Muse Spark 模型到开发者入口，厘清 Muse 与 Meta Model API 的关系。',
-        keywords:['Muse 是什么','Meta Muse','Muse AI','Muse Spark'],
-        content:`
-          <p>Muse 是 Meta 于 2026 年 9 月 8 日在美国上线的个人 AI 助手。普通用户看到的是 Muse 产品入口；开发者更应该关注它背后的 Muse Spark 模型，以及可通过 Meta Model API 使用的能力。</p>
-          <blockquote>理解 Muse 的关键，不是把它看成又一个聊天框，而是分清三层：面向用户的产品、负责推理的模型、面向开发者的接口。</blockquote>
-          <h2>先分清：产品、模型、接口</h2>
-          <h3>1. Muse：面向个人用户的助手</h3>
-          <p>Muse 是直接服务个人用户的 AI 助手。它承担的是“用户体验层”：人们在这里发起问题、组织任务、获得建议。发布初期，它首先在美国上线。</p>
-          <h3>2. Muse Spark：背后的模型</h3>
-          <p>Muse Spark 是支撑这套体验的模型家族。对开发者而言，真正决定产品上限的是模型在推理、工具调用、上下文处理与成本上的综合表现，而不是聊天界面本身。</p>
-          <h3>3. Meta Model API：开发者入口</h3>
-          <p>独立开发者通过 Meta Model API 使用 Muse Spark。接口采用 OpenAI 兼容方式，这意味着已有项目可以把模型调用层做成可替换配置，再逐步迁移，而不必一开始就重写整个应用。</p>
-          <h2>Muse 和 ChatGPT 有什么不同？</h2>
-          <p>最直观的差别是生态阶段。ChatGPT 已有成熟的用户习惯、工具与开发者内容；Muse 刚发布，信息差更大，但产品规范、接口能力与市场需求也仍在快速形成。现在更适合做小而清晰的验证，而不是押注一个庞大平台生态。</p>
-          <ul>
-            <li><strong>对普通用户：</strong>先判断能否满足自己的高频任务，而不是只看演示。</li>
-            <li><strong>对内容创作者：</strong>上手、对比、问题排查与真实案例是最早出现的搜索需求。</li>
-            <li><strong>对开发者：</strong>先从兼容接口、成本验证与具体工作流切入。</li>
-          </ul>
-          <h2>独立开发者现在能做什么？</h2>
-          <p>第一类是信息服务，例如中文教程、能力对比和迁移清单；第二类是开发工具，例如成本估算、调用监控与调试面板；第三类是垂直应用，把 Muse Spark 放进一个有明确输入、输出和价值判断的工作流。</p>
-          <p>“通用聊天套壳”很容易复制，也很难形成壁垒。相反，懂一个行业的流程、数据格式、质量标准，往往比多一个对话框更重要。</p>
-          <h2>发布初期，最值得验证的三件事</h2>
-          <ol>
-            <li><strong>任务质量：</strong>用自己的真实任务集做对照，不只看公开样例。</li>
-            <li><strong>总成本：</strong>把输入、输出、重试、工具调用和人工复核都算进去。</li>
-            <li><strong>可迁移性：</strong>把模型配置、提示词、工具层分开，避免绑定单一供应商。</li>
-          </ol>
-          <h2>一句话结论</h2>
-          <p>Muse 是面向个人用户的产品，Muse Spark 是模型，Meta Model API 是开发者入口。对独立开发者来说，眼下最稳妥的机会不是猜测未来的应用商店，而是围绕兼容接口、真实工作流和中文信息差，快速做出可以被验证的小产品。</p>
-        `
-      },
-      {
-        slug:'muse-vs-chatgpt-vs-claude', category:'模型对比', date:'2026年9月9日', time:'20:50', sample:true,
-        title:'Muse vs ChatGPT vs Claude 横向对比',
-        summary:'不做空泛“谁更强”，从产品定位、开发入口、生态成熟度和适用任务四个维度选择。',
-        keywords:['Muse vs ChatGPT','Muse vs Claude','AI 助手对比','大模型选择'],
-        content:`
-          <p>面对一个刚上线的 AI 助手，最容易问的是“它比 ChatGPT 或 Claude 强吗”。但对个人用户和独立开发者来说，更有用的问题是：<strong>哪一个更适合我眼前的任务？</strong></p>
-          <p>这篇对比不虚构跑分，也不把不同层级混在一起。Muse、ChatGPT、Claude 首先是产品；它们背后还有模型与开发接口。选择时要同时看体验层和工程层。</p>
-          <h2>快速对比</h2>
-          <table class="comparison">
-            <thead><tr><th>维度</th><th>Muse</th><th>ChatGPT</th><th>Claude</th></tr></thead>
-            <tbody>
-              <tr><td data-label="维度">产品阶段</td><td data-label="Muse">刚上线，能力与用法仍在形成</td><td data-label="ChatGPT">用户习惯与配套生态成熟</td><td data-label="Claude">在长文本与开发工作流中认知较强</td></tr>
-              <tr><td data-label="维度">开发入口</td><td data-label="Muse">Meta Model API，可使用 Muse Spark</td><td data-label="ChatGPT">OpenAI API 生态成熟</td><td data-label="Claude">Anthropic API 与工具链</td></tr>
-              <tr><td data-label="维度">迁移考虑</td><td data-label="Muse">OpenAI 兼容接口降低初始改造量</td><td data-label="ChatGPT">大量现有 SDK 与示例可复用</td><td data-label="Claude">需按其接口与模型特性适配</td></tr>
-              <tr><td data-label="维度">更适合先验证</td><td data-label="Muse">新模型成本、Agent 与工具调用场景</td><td data-label="ChatGPT">通用产品、成熟工作流</td><td data-label="Claude">复杂文本、代码与深度分析工作流</td></tr>
-            </tbody>
-          </table>
-          <h2>普通用户：先选产品体验</h2>
-          <h3>如果你重视成熟度</h3>
-          <p>ChatGPT 的优势是大量用户已经熟悉它的使用方式，相关教程、模板和第三方工具更丰富。你想快速找到现成经验时，成熟生态本身就是价值。</p>
-          <h3>如果你重视长文本与清晰表达</h3>
-          <p>Claude 长期被开发者用于阅读、写作和代码协作。是否适合你，仍应该用自己的文档长度、语言和交付标准测试。</p>
-          <h3>如果你想尝试新的个人助手路径</h3>
-          <p>Muse 的价值在于新的产品方向和 Muse Spark 模型入口。因为发布较新，优势与边界都需要更多真实任务验证。早期用户得到的是探索空间，也要承担不确定性。</p>
-          <h2>开发者：不要只比一次回答</h2>
-          <p>单轮问答很难代表真实产品。一个可持续的 AI 应用至少要比较以下五项：</p>
-          <ol>
-            <li>你的任务集上的完成质量；</li>
-            <li>输入、输出与重试后的总成本；</li>
-            <li>结构化输出与工具调用的稳定性；</li>
-            <li>延迟、限流与失败恢复；</li>
-            <li>迁移工作量与供应商锁定风险。</li>
-          </ol>
-          <h2>更稳妥的工程选择：可替换，而非押注</h2>
-          <p>OpenAI 兼容接口让 Muse Spark 更容易进入现有项目，但“兼容”不等于“表现完全相同”。提示词、工具参数、错误处理和输出解析仍需逐项测试。</p>
-          <pre><code>// 建议：把模型供应商留在配置层
-const provider = {
-  baseURL: MODEL_BASE_URL,
-  apiKey: MODEL_API_KEY,
-  model: MODEL_NAME
-};</code></pre>
-          <p>最好的架构不是一次选对，而是允许你用同一批真实任务做 A/B 验证，随时切换或组合模型。</p>
-          <h2>怎么选：给你一个简短结论</h2>
-          <ul>
-            <li><strong>要成熟生态与大量现成经验：</strong>优先评估 ChatGPT。</li>
-            <li><strong>重视长文、代码与复杂文本协作：</strong>把 Claude 放进实测名单。</li>
-            <li><strong>想验证新模型、Agent 能力与兼容迁移：</strong>用 Muse Spark 做一组小规模对照。</li>
-          </ul>
-          <p>真正专业的横向对比，不是宣布一个永远的冠军，而是公开任务、标准和边界。随着产品更新，结论也应该更新。</p>
-        `
-      },
-      {
-        slug:'launch-day-guide', category:'新闻资讯', date:'2026年9月9日', time:'19:40',
-        title:'Muse 上线首日：产品入口与开发机会速览',
-        summary:'把首发信息整理成一张路线图：普通用户看产品，开发者看模型与接口，创业者看需求缺口。',
-        keywords:['Muse 上线','Muse 新闻','Meta AI 助手','Muse 发布'],
-        outline:['首发时间与地区','产品、模型、API 三层关系','独立开发者的 72 小时验证清单']
-      },
-      {
-        slug:'first-use', category:'新手教程', date:'2026年9月10日', time:'09:00',
-        title:'Muse 新手上手指南：第一次使用前要知道的 7 件事',
-        summary:'从适用地区、任务选择到隐私与结果核验，建立一套不被演示视频带偏的上手方法。',
-        keywords:['Muse 教程','Muse 怎么用','Muse 上手','Muse 使用指南'],
-        outline:['使用前的准备','从低风险任务开始','如何检查答案与保护敏感信息']
-      },
-      {
-        slug:'faq', category:'新手教程', date:'2026年9月10日', time:'11:00',
-        title:'Muse 常见问题 12 问：地区、账号、模型与开发接口',
-        summary:'集中回答发布初期最容易混淆的问题，并把产品使用与 API 开发清楚分开。',
-        keywords:['Muse FAQ','Muse 地区','Muse 账号','Muse API'],
-        outline:['产品可用性问题','Muse Spark 与 Muse 的关系','开发者入口与常见误区']
-      },
-      {
-        slug:'model-evaluation', category:'模型对比', date:'2026年9月11日', time:'10:00',
-        title:'别只看跑分：Muse Spark 模型评测应该测什么？',
-        summary:'给出一套适合独立开发者的任务集、评分表与复测方法，避免用单个截图下结论。',
-        keywords:['Muse Spark 评测','大模型跑分','模型评测方法','LLM 对比'],
-        outline:['建立自己的任务集','质量、成本、延迟三维评分','如何记录可复现结果']
-      },
-      {
-        slug:'api-quickstart', category:'API 开发', date:'2026年9月11日', time:'14:00',
-        title:'Muse Spark API 快速开始：从 OpenAI 兼容接口迁移',
-        summary:'用配置隔离、最小调用与错误处理三步，把现有模型调用迁移成可回滚的验证版本。',
-        keywords:['Muse Spark API','Meta Model API','OpenAI 兼容','API 迁移'],
-        outline:['迁移前的代码分层','最小请求与响应解析','兼容不代表无需测试']
-      },
-      {
-        slug:'api-cost', category:'API 开发', date:'2026年9月12日', time:'10:30',
-        title:'模型成本怎么算？为 Muse Spark 建一个真实用量表',
-        summary:'不只算标价：把上下文、重试、工具调用、缓存与人工复核纳入每个任务的真实成本。',
-        keywords:['Muse Spark 价格','API 成本','Token 成本','模型成本计算'],
-        outline:['从每百万 Token 到每次任务','容易漏算的四类成本','用量表与预算告警字段']
-      },
-      {
-        slug:'agent-ideas', category:'玩法案例', date:'2026年9月12日', time:'15:00',
-        title:'5 个适合独立开发者的 Muse Agent 小产品',
-        summary:'从监控、整理、批处理到垂直助手，选择输入明确、结果可核验、有人愿意付费的任务。',
-        keywords:['Muse Agent','AI 产品创意','独立开发','Agent 案例'],
-        outline:['监控与变化摘要','垂直资料整理','批量质检与结构化提取','为什么不做通用聊天套壳']
-      },
-      {
-        slug:'tool-calling', category:'玩法案例', date:'2026年9月13日', time:'10:00',
-        title:'工具调用实战：让 Muse Spark 完成一次可审计的工作流',
-        summary:'以“查找—判断—输出”为例，拆解工具定义、权限边界、失败恢复和人工确认点。',
-        keywords:['Muse 工具调用','Agent 工作流','Function Calling','AI 自动化'],
-        outline:['定义最小工具集合','将判断与执行分开','记录轨迹、错误与人工确认']
-      }
-    ];
-
-    let activeCategory = '全部';
-    const homeView = document.getElementById('homeView');
-    const articleView = document.getElementById('articleView');
-    const articleList = document.getElementById('articleList');
-    const articleCount = document.getElementById('articleCount');
-
-    function renderChannels(){
-      document.getElementById('channelGrid').innerHTML = channels.map((item,i)=>`
-        <button class="channel" data-category="${item.name}">
-          <span class="channel-no">0${i+1}</span>
-          <span class="channel-name">${item.name}</span>
-          <span class="channel-desc">${item.desc}</span>
-        </button>`).join('');
-    }
-
-    function renderFilters(){
-      const values=['全部',...channels.map(c=>c.name)];
-      document.getElementById('filters').innerHTML=values.map(v=>`<button class="filter ${v===activeCategory?'active':''}" data-filter="${v}">${v}</button>`).join('');
-    }
-
-    function renderArticles(){
-      const filtered=activeCategory==='全部'?articles:articles.filter(a=>a.category===activeCategory);
-      articleCount.textContent=`显示 ${filtered.length} / ${articles.length} 篇`;
-      if(!filtered.length){articleList.innerHTML='<div class="empty">这个栏目还没有文章。</div>';return;}
-      articleList.innerHTML=filtered.map(a=>{
-        const n=articles.indexOf(a)+1;
-        return `<article class="article-card">
-          <div class="article-index">${String(n).padStart(2,'0')}</div>
-          <div class="card-meta"><span class="category">${a.category}</span><br>${a.date}<br>${a.time}</div>
-          <div class="article-main">
-            <h3><button data-open="${a.slug}">${a.title}${a.sample?'<span class="sample">全文样稿</span>':''}</button></h3>
-            <p>${a.summary}</p>
-          </div>
-          <div class="keywords">${a.keywords.map(k=>`<span class="keyword">${k}</span>`).join('')}</div>
-        </article>`;
-      }).join('');
-    }
-
-    function relatedFor(article){
-      const same=articles.filter(a=>a.slug!==article.slug && a.category===article.category);
-      const others=articles.filter(a=>a.slug!==article.slug && a.category!==article.category);
-      return [...same,...others].slice(0,3);
-    }
-
-    function openArticle(slug, push=true){
-      const a=articles.find(x=>x.slug===slug);
-      if(!a)return;
-      homeView.hidden=true;
-      articleView.hidden=false;
-      document.getElementById('articleHeader').innerHTML=`
-        <div class="article-kicker">${a.category}${a.sample?' · 全文样稿':' · 编辑提纲'}</div>
-        <h1 class="article-title">${a.title}</h1>
-        <p class="article-summary">${a.summary}</p>
-        <div class="article-byline"><span>编辑部</span><time datetime="${a.date.replace(/年|月/g,'-').replace('日','')}">发布时间：${a.date} ${a.time}</time><span>阅读约 ${a.sample?'6':'2'} 分钟</span></div>`;
-      document.getElementById('articleBody').innerHTML=a.content || `
-        <div class="status-note">这篇文章正在编辑中。现公开选题说明与内容提纲，便于查看首批内容规划。</div>
-        <h2>为什么值得写</h2>
-        <p>${a.summary}</p>
-        <div class="outline-box"><strong>拟定提纲</strong><ol>${(a.outline||[]).map(x=>`<li>${x}</li>`).join('')}</ol></div>
-        <h2>编辑原则</h2>
-        <p>正文将以可复现的步骤、明确的适用边界和真实任务为基础；涉及价格、能力或地区可用性时，会标注核验时间，避免把发布期信息写成长期结论。</p>`;
-      document.getElementById('articleAside').innerHTML=`
-        <div class="aside-block"><h3>SEO 关键词</h3><div class="aside-keywords">${a.keywords.map(k=>`<span class="keyword">${k}</span>`).join('')}</div></div>
-        <div class="aside-block related"><h3>相关阅读</h3>${relatedFor(a).map(r=>`<button data-open="${r.slug}">${r.title}</button>`).join('')}</div>`;
-      document.title=`${a.title}｜Muse 中文资讯站`;
-      if(push)history.pushState({slug},'',`#article/${slug}`);
-      window.scrollTo({top:0,behavior:'instant'});
-    }
-
-    function showHome(target='top',push=true){
-      articleView.hidden=true;
-      homeView.hidden=false;
-      document.title='Muse 中文资讯站';
-      if(push)history.pushState({},'',location.pathname);
-      requestAnimationFrame(()=>document.getElementById(target)?.scrollIntoView({block:'start'}));
-    }
-
-    function filterCategory(category){
-      activeCategory=category;
-      renderFilters();
-      renderArticles();
-      showHome('articles');
-    }
-
-    document.addEventListener('click',e=>{
-      const open=e.target.closest('[data-open]');
-      if(open){openArticle(open.dataset.open);return;}
-      const filter=e.target.closest('[data-filter]');
-      if(filter){activeCategory=filter.dataset.filter;renderFilters();renderArticles();return;}
-      const cat=e.target.closest('[data-category]');
-      if(cat){filterCategory(cat.dataset.category);return;}
-      const scroll=e.target.closest('[data-scroll]');
-      if(scroll){showHome(scroll.dataset.scroll);return;}
-      const home=e.target.closest('[data-home]');
-      if(home){activeCategory='全部';renderFilters();renderArticles();showHome(home.dataset.home);}
-    });
-    document.getElementById('backButton').addEventListener('click',()=>showHome('articles'));
-    window.addEventListener('popstate',()=>{
-      const match=location.hash.match(/^#article\/(.+)$/);
-      if(match)openArticle(match[1],false); else showHome('top',false);
-    });
-
-    renderChannels();renderFilters();renderArticles();
-    const initial=location.hash.match(/^#article\/(.+)$/);
-    if(initial)openArticle(initial[1],false);
-  </script>
-</body>
-</html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Muse 中文资讯站 | Meta 个人 AI 助手的中文教程与资讯</title>
+<meta name="description" content="Muse 中文资讯站：Meta 个人 AI 助手 Muse 的第一手中文教程——是什么、怎么用、怎么注册、免费吗、安全吗，以及 Muse Spark API 开发指南。独立非官方站点。">
+<link rel="canonical" href="https://muse-zh.vercel.app/">
+<meta property="og:title" content="Muse 中文资讯站">
+<meta property="og:description" content="Meta 个人 AI 助手 Muse 的第一手中文教程与资讯。">
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.8;color:#1f2937;background:#f8fafc}
+a{color:#0064e0;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+header.site{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:10}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-weight:800;font-size:18px;color:#111}.logo span{color:#0064e0}
+nav.cat{display:flex;gap:4px;overflow-x:auto}
+nav.cat a{font-size:13px;color:#4b5563;padding:6px 10px;white-space:nowrap;border-radius:6px}
+nav.cat a:hover{background:#eff6ff;color:#0064e0;text-decoration:none}
+.hero{background:linear-gradient(135deg,#0064e0,#7c3aed);color:#fff;padding:56px 0 48px;text-align:center}
+.hero h1{font-size:30px;margin-bottom:12px}
+.hero p{opacity:.92;font-size:15px;max-width:640px;margin:0 auto}
+.hero .kw{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.hero .kw span{background:rgba(255,255,255,.18);font-size:12px;padding:4px 12px;border-radius:20px}
+section.block{padding:36px 0}
+h2.sec{font-size:20px;margin-bottom:18px;padding-left:10px;border-left:4px solid #0064e0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;transition:box-shadow .2s}
+.card:hover{box-shadow:0 6px 20px rgba(0,100,224,.12)}
+.card .tag{font-size:11px;color:#0064e0;background:#eff6ff;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:8px}
+.card h3{font-size:16px;margin-bottom:6px}.card h3 a{color:#111}
+.card p{font-size:13px;color:#6b7280;line-height:1.6}
+article.post{background:#fff;border-radius:12px;padding:32px 28px;margin:28px 0;border:1px solid #e5e7eb}
+.crumb{font-size:13px;color:#9ca3af;margin-bottom:14px}
+article.post h1{font-size:26px;line-height:1.4;margin-bottom:10px}
+.meta{font-size:13px;color:#9ca3af;margin-bottom:24px}
+article.post h2{font-size:19px;margin:30px 0 12px;padding-top:8px}
+article.post p{margin:12px 0}
+article.post ul,article.post ol{margin:12px 0 12px 22px}
+article.post li{margin:6px 0}
+details.faq{background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;margin:10px 0;padding:12px 16px}
+details.faq summary{font-weight:700;cursor:pointer}
+.refs{background:#f8fafc;border-radius:8px;padding:16px 18px;margin-top:28px;font-size:13px}
+.refs h2{font-size:15px!important;margin:0 0 8px!important}
+.refs li{margin:4px 0}
+.note{font-size:12px;color:#9ca3af;border-top:1px solid #e5e7eb;margin-top:24px;padding-top:14px}
+.related{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:14px}
+.related a{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;font-size:14px;color:#111}
+.related a:hover{border-color:#0064e0;text-decoration:none}
+footer.site{background:#111827;color:#9ca3af;font-size:13px;padding:32px 0;margin-top:40px;text-align:center}
+footer.site p{margin:6px 0}
+@media(max-width:640px){.hero h1{font-size:24px}article.post{padding:22px 18px}article.post h1{font-size:22px}}
+</style></head><body>
+<header class="site"><div class="wrap">
+<div class="logo"><a href="/" style="color:#111;text-decoration:none">Muse<span>中文资讯站</span></a></div>
+<nav class="cat"><a href="/#cat-新手入门">新手入门</a><a href="/#cat-费用订阅">费用订阅</a><a href="/#cat-对比评测">对比评测</a><a href="/#cat-安全隐私">安全隐私</a><a href="/#cat-场景实战">场景实战</a><a href="/#cat-API 开发">API 开发</a></nav></div></header>
+<div class="hero"><div class="wrap">
+<h1>Muse 中文资讯站</h1>
+<p>Meta 个人 AI 助手 Muse 的第一手中文教程：从注册使用、费用安全，到场景实战与 API 开发，帮你快速上手这个"替你办事"的 AI 代理。</p>
+<div class="kw"><span>Muse 是什么</span><span>Muse 怎么用</span><span>Muse 注册</span><span>Muse 免费吗</span><span>Muse 安全吗</span><span>Muse Spark API</span></div>
+</div></div>
+<div class="wrap"><section class="block">
+<h2 class="sec" id="cat-新手入门">新手入门</h2><div class="grid"><div class="card"><span class="tag">新手入门</span><h3><a href="/articles/muse-shi-shen-me.html">Muse 是什么？一文读懂 Meta 的个人 AI 助手</a></h3><p>Muse 是 Meta 2026 年 9 月发布的个人 AI 助手，能替你订机票、购物、发邮件。本文一文讲清它是什么、能做什么、和聊天机器人的区别。</p></div><div class="card"><span class="tag">新手入门</span><h3><a href="/articles/muse-zen-me-yong.html">Meta Muse 怎么用：新手使用教程</a></h3><p>从下载安装到发出第一个任务，Meta Muse 新手教程一步步教你上手：怎么提问、怎么授权、怎么管理它的执行过程。</p></div><div class="card"><span class="tag">新手入门</span><h3><a href="/articles/muse-zhu-ce.html">Muse 怎么注册？完整注册教程</a></h3><p>Muse 注册需要什么条件？美国区、Meta 账号、年龄要求全解析，附注册流程 step by step。</p></div><div class="card"><span class="tag">新手入门</span><h3><a href="/articles/muse-guo-nei.html">Muse 国内能用吗？中国用户使用指南</a></h3><p>Muse 首发仅限美国，中国用户能用吗？本文讲清地区限制、账号要求与合规使用的现实路径。</p></div></div><h2 class="sec" id="cat-费用订阅">费用订阅</h2><div class="grid"><div class="card"><span class="tag">费用订阅</span><h3><a href="/articles/muse-fei-yong.html">Muse 免费吗？收费标准与订阅价格解析</a></h3><p>Muse 免费版够用吗？$20 Power 和 $100 Maximum 两档订阅怎么选？一文看懂 Muse 的价格体系。</p></div><div class="card"><span class="tag">费用订阅</span><h3><a href="/articles/muse-qu-xiao-ding-yue.html">如何取消 Muse 订阅</a></h3><p>Muse 订阅怎么取消？App 端和网页端取消流程、账单周期与退款规则，一文讲清。</p></div></div><h2 class="sec" id="cat-对比评测">对比评测</h2><div class="grid"><div class="card"><span class="tag">对比评测</span><h3><a href="/articles/muse-vs-chatgpt.html">Muse vs ChatGPT vs Claude 横向对比</a></h3><p>Muse、ChatGPT、Claude 怎么选？从定位、能力、价格、隐私四个维度横向对比，帮你找到适合自己的 AI 助手。</p></div></div><h2 class="sec" id="cat-安全隐私">安全隐私</h2><div class="grid"><div class="card"><span class="tag">安全隐私</span><h3><a href="/articles/muse-an-quan.html">Muse 安全吗？Secure VM 与 Sentinel 机制解析</a></h3><p>把邮箱密码交给 AI 助手安全吗？解析 Muse 的 Secure VM 隔离、Sentinel 审批、一次性虚拟卡等安全机制。</p></div></div><h2 class="sec" id="cat-场景实战">场景实战</h2><div class="grid"><div class="card"><span class="tag">场景实战</span><h3><a href="/articles/muse-ding-ji-piao.html">用 Muse 订机票：场景实测教程</a></h3><p>让 Muse 帮你订机票：从说需求、比价格到确认支付，完整走一遍 AI 代办订机票的真实流程。</p></div></div><h2 class="sec" id="cat-API 开发">API 开发</h2><div class="grid"><div class="card"><span class="tag">API 开发</span><h3><a href="/articles/muse-spark-api.html">Muse Spark API 教程：开发者入门</a></h3><p>Meta Model API 开发者入门：免费额度、价格、OpenAI 兼容调用方式，带你用 Muse Spark 模型构建应用。</p></div></div>
+</section></div>
+<footer class="site"><div class="wrap">
+<p><strong style="color:#e5e7eb">Muse 中文资讯站</strong> · Meta 个人 AI 助手的第一手中文资讯与教程</p>
+<p>本站为独立非官方站点，与 Meta 公司无关。教程内容仅供参考，功能与价格以 Meta 官方最新说明为准。</p>
+<p>© 2026 Muse 中文资讯站</p></div></footer>
+</body></html>
