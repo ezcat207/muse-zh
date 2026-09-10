@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>用 Muse 订机票：场景实测教程 | Muse 中文资讯站</title>
+<meta name="description" content="让 Muse 帮你订机票：从说需求、比价格到确认支付，完整走一遍 AI 代办订机票的真实流程。">
+<link rel="canonical" href="https://muse-zh.vercel.app/articles/muse-ding-ji-piao.html">
+<meta property="og:title" content="用 Muse 订机票：场景实测教程">
+<meta property="og:description" content="让 Muse 帮你订机票：从说需求、比价格到确认支付，完整走一遍 AI 代办订机票的真实流程。">
+<meta property="og:type" content="article">
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.8;color:#1f2937;background:#f8fafc}
+a{color:#0064e0;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+header.site{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:10}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-weight:800;font-size:18px;color:#111}.logo span{color:#0064e0}
+nav.cat{display:flex;gap:4px;overflow-x:auto}
+nav.cat a{font-size:13px;color:#4b5563;padding:6px 10px;white-space:nowrap;border-radius:6px}
+nav.cat a:hover{background:#eff6ff;color:#0064e0;text-decoration:none}
+.hero{background:linear-gradient(135deg,#0064e0,#7c3aed);color:#fff;padding:56px 0 48px;text-align:center}
+.hero h1{font-size:30px;margin-bottom:12px}
+.hero p{opacity:.92;font-size:15px;max-width:640px;margin:0 auto}
+.hero .kw{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.hero .kw span{background:rgba(255,255,255,.18);font-size:12px;padding:4px 12px;border-radius:20px}
+section.block{padding:36px 0}
+h2.sec{font-size:20px;margin-bottom:18px;padding-left:10px;border-left:4px solid #0064e0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;transition:box-shadow .2s}
+.card:hover{box-shadow:0 6px 20px rgba(0,100,224,.12)}
+.card .tag{font-size:11px;color:#0064e0;background:#eff6ff;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:8px}
+.card h3{font-size:16px;margin-bottom:6px}.card h3 a{color:#111}
+.card p{font-size:13px;color:#6b7280;line-height:1.6}
+article.post{background:#fff;border-radius:12px;padding:32px 28px;margin:28px 0;border:1px solid #e5e7eb}
+.crumb{font-size:13px;color:#9ca3af;margin-bottom:14px}
+article.post h1{font-size:26px;line-height:1.4;margin-bottom:10px}
+.meta{font-size:13px;color:#9ca3af;margin-bottom:24px}
+article.post h2{font-size:19px;margin:30px 0 12px;padding-top:8px}
+article.post p{margin:12px 0}
+article.post ul,article.post ol{margin:12px 0 12px 22px}
+article.post li{margin:6px 0}
+details.faq{background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;margin:10px 0;padding:12px 16px}
+details.faq summary{font-weight:700;cursor:pointer}
+.refs{background:#f8fafc;border-radius:8px;padding:16px 18px;margin-top:28px;font-size:13px}
+.refs h2{font-size:15px!important;margin:0 0 8px!important}
+.refs li{margin:4px 0}
+.note{font-size:12px;color:#9ca3af;border-top:1px solid #e5e7eb;margin-top:24px;padding-top:14px}
+.related{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:14px}
+.related a{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;font-size:14px;color:#111}
+.related a:hover{border-color:#0064e0;text-decoration:none}
+footer.site{background:#111827;color:#9ca3af;font-size:13px;padding:32px 0;margin-top:40px;text-align:center}
+footer.site p{margin:6px 0}
+@media(max-width:640px){.hero h1{font-size:24px}article.post{padding:22px 18px}article.post h1{font-size:22px}}
+</style></head><body>
+<header class="site"><div class="wrap">
+<div class="logo"><a href="/" style="color:#111;text-decoration:none">Muse<span>中文资讯站</span></a></div>
+<nav class="cat"><a href="/#cat-新手入门">新手入门</a><a href="/#cat-费用订阅">费用订阅</a><a href="/#cat-对比评测">对比评测</a><a href="/#cat-安全隐私">安全隐私</a><a href="/#cat-场景实战">场景实战</a><a href="/#cat-API 开发">API 开发</a></nav></div></header>
+<div class="wrap"><article class="post">
+<div class="crumb"><a href="/">首页</a> / 场景实战 / 用 Muse 订机票：场景实测教程</div>
+<h1>用 Muse 订机票：场景实测教程</h1>
+<div class="meta">更新于 2026-09-10 · 场景实战 · 阅读约 4 分钟</div>
+<p>订机票是 Muse 发布时官方点名的首批能力之一，也是最适合新手的第一个实测场景。下面以&quot;订一张机票&quot;和&quot;航班延误改签&quot;为例，走一遍完整流程，并诚实标注哪些是官方演示过的、哪些来自媒体报道。</p>
+<h2>场景一：订一张机票（官方首批能力）</h2>
+<ol><li><strong>先连服务</strong>：在设置里接入邮箱和日历，让 Muse 知道你的行程上下文。建议先给只读权限。</li><li><strong>一句话下需求</strong>：&quot;帮我订 9 月 20 日洛杉矶飞纽约的经济舱，晚上 6 点后起飞，预算 350 美元以内。&quot;越具体越好。</li><li><strong>看它比价</strong>：Muse 会操作浏览器查航班、横向比价，把候选列给你选。这是官方介绍的标准流程。</li><li><strong>你拍板、它下单</strong>：选定航班后，付款环节它会停下来请求确认。支付走 Stripe Link 一次性虚拟卡，不暴露真实卡号——确认前核对好航班号、时间、价格三要素。</li></ol>
+<h2>场景二：航班延误改签（官方演示 + 媒体实测）</h2>
+<p>航班延误改签出现在官方演示与多家媒体的 launch-day 实测里：你告诉 Muse&quot;我的航班延误了，帮我改签到今晚能走的最早一班&quot;，它会去查改签政策、找备选航班，改签前同样先征得你同意。注意：改签产生的差价与手续费由你确认，Muse 不会自作主张花钱。</p>
+<h2>场景三：机票价格监控（官方演示能力）</h2>
+<p>据报道，流出的 App Store 应用截图展示了&quot;票价追踪&quot;功能：你可以让 Muse 盯着某条航线的价格，降价或有合适舱位时通知你。用法：&quot;帮我盯着 10 月 1 日洛杉矶飞纽约的经济舱，低于 280 美元告诉我。&quot;这是 Agent 相对传统比价 App 的优势——不用你天天去刷。</p>
+<h2>行前检查清单</h2>
+<ul><li>[ ] 确认号已收到并保存</li><li>[ ] 去航司官网验证行程存在</li><li>[ ] 核对姓名拼音、证件号与订单一致</li><li>[ ] 改签/退票政策截图留存</li></ul>
+<h2>实测中的 4 个注意事项</h2>
+<ol><li><strong>成功率看网站</strong>：有规范预订流程的大航司官网成功率最高，小众代理站可能需要你中途接手。</li><li><strong>价格自己 double-check</strong>：下单前把总价（含税费）核对一遍，Agent 看漏税费明细是有可能的。</li><li><strong>留好确认号</strong>：订完让 Muse 把确认号、行程单发到你邮箱，留作凭证。</li><li><strong>据报道，内部测试曾出现任务执行不稳定的情况</strong>（路透社报道口径），重要行程建议订完后自己去航司官网验证一遍。</li></ol>
+<h2>常见问题</h2>
+<details class="faq"><summary>需要提前绑定银行卡吗？</summary><p>付款时走 Link 一次性虚拟卡，按官方设计不需要把真实卡号交给 Muse。具体绑定流程以 App 内指引为准。</p></details>
+<details class="faq"><summary>它能抢到特价票吗？</summary><p>它能做的是比价和下单，&quot;抢&quot;的部分取决于各售票网站的规则，别指望它突破网站本身的限制。</p></details>
+<details class="faq"><summary>改签要加钱，谁说了算？</summary><p>你。任何产生费用的操作都要你先确认，这是它的安全机制。</p></details>
+<details class="faq"><summary>能订国内航班吗？</summary><p>目前它的服务生态围绕美国（首批集成就那么几家），国内航班预订不在官方演示范围内。</p></details>
+<details class="faq"><summary>订票失败了钱会丢吗？</summary><p>支付经你确认才执行；真遇到扣费异常，Link 交易有相应的保障机制，保留好记录去申诉。</p></details>
+<div class="refs"><h2>参考文献</h2><ul>
+</ul></div>
+<ul><li><a href="https://finance.sina.cn/usstock/mggd/2026-09-09/detail-inirfivw3801576.d.html" target="_blank" rel="noopener">Meta 推出个人 AI 代理 Muse（新浪财经）</a></li><li><a href="https://www.techbang.com/posts/133035-meta-muse-personal-ai-agent-launch" target="_blank" rel="noopener">Meta 推 Muse 個人 AI 代理（TechBang）</a></li><li><a href="https://www.youtube.com/watch?v=b4xYVrrBHJI" target="_blank" rel="noopener">Review of Muse - Personal AI agent from Meta（YouTube，含航班改签实测）</a></li><li><a href="https://www.youtube.com/watch?v=mtFRjhsxjoM" target="_blank" rel="noopener">Meta Muse: What Meta&#x27;s personal assistant will mean for brands（YouTube）</a></li><li><a href="https://www.androidauthority.com/meta-muse-agentic-ai-report-3708619/" target="_blank" rel="noopener">Meta wants you to trust its Muse agentic AI with your bank account（Android Authority）</a></li><li><a href="https://www.tradingview.com/news/benzinga:2f0732e58094b:0-meta-s-muse-ai-agent-promises-to-handle-your-digital-life-but-internal-tests-reportedly-revealed-privacy-risks-security-flaws-and-failure-modes-that-made-it-unreliable/" target="_blank" rel="noopener">Meta&#x27;s Muse AI Agent Promises to Handle Your Digital Life — 内部测试问题报道（Benzinga via TradingView）</a></li></ul>
+<p>本文更新于 2026 年 9 月；Muse 仍在快速迭代，功能与价格以 Meta 官方最新说明为准。</p>
+<p class="note">本文更新于 2026 年 9 月；Muse 仍在快速迭代，功能与价格以 Meta 官方最新说明为准。</p>
+</article>
+<h2 class="sec">相关阅读</h2>
+<div class="related"><a href="/articles/muse-shi-shen-me.html">Muse 是什么？一文读懂 Meta 的个人 AI 助手</a><a href="/articles/muse-zen-me-yong.html">Meta Muse 怎么用：新手使用教程</a><a href="/articles/muse-zhu-ce.html">Muse 怎么注册？完整注册教程</a></div>
+</div>
+<footer class="site"><div class="wrap">
+<p><strong style="color:#e5e7eb">Muse 中文资讯站</strong> · Meta 个人 AI 助手的第一手中文资讯与教程</p>
+<p>本站为独立非官方站点，与 Meta 公司无关。教程内容仅供参考，功能与价格以 Meta 官方最新说明为准。</p>
+<p>© 2026 Muse 中文资讯站</p></div></footer>
+</body></html>
