@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://muse-zh.vercel.app/sitemap.xml
